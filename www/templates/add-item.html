@@ -1,0 +1,22 @@
+<ion-view view-title="Order List" id="page_addItem">
+
+  <ion-content class="padding">
+
+    <div class="list list-inset">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search">
+      </label>
+    </div>
+
+    <ion-toggle ng-model="item.show" ng-change="onItemChange(item)" ng-repeat="item in newitems">
+      {{item.title}}
+    </ion-toggle>
+
+    <button ng-click="goBack()" class="button button-block button-positive" style="margin-top: 40px;">
+      Add to Order
+    </button>
+
+  </ion-content>
+
+</ion-view>

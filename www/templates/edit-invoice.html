@@ -1,0 +1,164 @@
+<ion-view title="Edit Invoice" id="add_client" hide-nav-bar="false">
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="viewInvoiceData('view')">View Invoice</button>
+    </ion-nav-buttons>
+    <ion-content padding="true" class="has-header">
+        <form class="list">
+
+          <!-- Store Information -->
+
+            <ion-item class="item-divider">Store Information</ion-item>
+
+            <label class="item item-input">
+                <span class="input-label">Name</span>
+                <input type="text" placeholder="Name" ng-model="storeValue.name">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Address</span>
+                <input type="text" placeholder="Address" ng-model="store_fullAddress">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Phone Number</span>
+                <input type="tel" placeholder="Phone Number" ng-model="storeValue.phone">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Email</span>
+                <input type="email" placeholder="Example@email.com" ng-model="storeValue.email">
+            </label>
+
+            <!-- Sold To -->
+
+            <ion-item class="item-divider">SOLD TO</ion-item>
+
+            <label class="item item-input">
+                <span class="input-label">Name</span>
+                <input type="text" placeholder="Name" ng-model="sold_fullName">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Email</span>
+                <input type="text" placeholder="Email" ng-model="clientData.client_email">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Street Address</span>
+                <input type="text" placeholder="Street Address" ng-model="clientData.address">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">City</span>
+                <input type="text" placeholder="City" ng-model="clientData.city">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Zip</span>
+                <input type="tel" placeholder="Zip" ng-model="clientData.zipcode">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Phone</span>
+                <input type="tel" placeholder="Phone" ng-model="clientData.phone">
+            </label>
+
+            <!-- Ship To -->
+
+            <ion-item class="item-divider">SHIP TO</ion-item>
+
+            <label class="item item-input">
+                <span class="input-label">Name</span>
+                <input type="text" placeholder="Name" ng-model="ship_info.name">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Company</span>
+                <input type="text" placeholder="Company" ng-model="ship_info.company">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Street Address</span>
+                <input type="text" placeholder="Street Address" ng-model="ship_info.address">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">City</span>
+                <input type="text" placeholder="City" ng-model="ship_info.city">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">ZIP Code</span>
+                <input type="tel" placeholder="ZIP Code" ng-model="ship_info.zipcode">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Phone</span>
+                <input type="tel" placeholder="Phone" ng-model="ship_info.phone">
+            </label>
+
+        </form>
+
+        <div class="list product-list">
+          <ion-toggle toggle-class="toggle-positive" ng-model="viewProduct">View Product Detail</ion-toggle>
+
+          <div class="list" ng-show="viewProduct">
+            <a class="item item-thumbnail-left " ng-repeat="item in products">
+              <img src="{{item.image}}">
+              <h2>{{item.name}}</h2>
+              <p class="p1">Cost: ${{item.cost}}, Count: {{item.count}}</p>
+              <p class="p2">Price: ${{(item.cost * 1) * (item.count * 1)}}</p>
+            </a>
+
+            <a class="item item-icon-left">Padding (%)
+              <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+            </a>
+
+            <a class="item item-icon-left">Tack Scrips (%)
+              <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+            </a>
+
+            <a class="item item-icon-left">Glue (%)
+              <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+            </a>
+
+            <a class="item item-icon-left">Labor (%)
+              <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+            </a>
+
+            <a class="item item-icon-left">Transition Strips (%)
+              <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+            </a>
+
+            <a class="item item-icon-left">Discount ($)
+              <span style="margin-left: 50px;">{{order.discount}}</span>
+            </a>
+
+            <a class="item item-icon-left">Sales Tax (%)
+              <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+            </a>
+
+            <a class="item item-icon-left">Shipping Fee ($)
+              <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+            </a>
+
+          </div>
+          <a class="item item-icon-left">
+            Total Price:
+            <span style="margin-left: 50px; color: red;">
+              $ {{order.total_price | number:2}}
+            </span>
+          </a>
+        </div>
+
+        <div  class="button-bar">
+            <button class="button button-positive button-block icon-left ion-android-download" ng-click="viewInvoiceData('download')">
+                    Download  Invoice
+            </button>
+            <button ng-show="file_url" ng-click="sendingEmail()" class="button button-positive button-block icon ion-paper-airplane">
+              Send Email
+            </button>
+        </div>
+
+    </ion-content>
+</ion-view>

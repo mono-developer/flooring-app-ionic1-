@@ -1,0 +1,103 @@
+<ion-view view-title="Add Order" id="order-add">
+    <ion-content class="padding">
+
+      <div class="list">
+            <label class="item item-input item-select" ng-hide="clientData._id">
+                <div class="input-label">
+                    Select A Client
+                </div>
+                <input type="text"  ng-model="client_name" ng-click="optionClient()" readonly>
+                <!-- <select ng-model="client_id" ng-options="item.first_name for item in clientsList"
+                        ng-change="changedClient(client_id)">
+                </select> -->
+
+            </label>
+
+            <div class="list customer-info" ng-show="clientData._id">
+                <a class="item item-thumbnail-left">
+                  <img src="img/icon/avatar.png">
+                  <h2>{{clientData.first_name}} {{clientData.last_name}}</h2>
+                  <p class="p1"><i class="icon ion-email"></i>&nbsp;&nbsp;{{clientData.client_email}}</p>
+                  <p class="p2"><i class="icon ion-ios-telephone"></i>&nbsp;&nbsp;{{clientData.phone}}</p>
+                </a>
+              </div>
+
+            <label class="item item-input">
+                <span class="input-label">Date</span>
+                <input type="text" ng-model="addorder.date">
+            </label>
+            <button ng-click="showDatePicker()" class="button button-block picker-button"> </button>
+
+            <label class="item item-input">
+                <span class="input-label">Due Date</span>
+                <input type="text" ng-model="addorder.duedate">
+            </label>
+            <button ng-click="showDuedatePicker()" class="button button-block picker-button"> </button>
+
+        </div>
+
+        <div class="list" ng-repeat="product in order.products track by $index">
+
+            <label class="item item-input item-select">
+              <div class="input-label">Select Product</div>
+              <input type="text"  ng-model="product.product_name" ng-click="optionProduct($index)" readonly>
+            </label>
+
+            <label class="item item-input date">
+                <span class="input-label">Count</span>
+                <input type="number"  ng-model="product.count" ng-change="onPriceChange()">
+            </label>
+
+            <label class="item item-input date">
+                <span class="input-label">Cost ($)</span>
+                <input type="number"  ng-model="product.cost" ng-change="onPriceChange()">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Total ($)</span>
+                <input type="number"  ng-model="product.count * product.cost" ng-model-options="{ getterSetter: true }">
+            </label>
+        </div>
+
+        <button ng-click="addProduct()" class="button button-positive  button-block">Add Product</button>
+
+        <button ng-click="addItem()" class="button icon-left ion-ios-plus-outline">Add Item</button>
+
+        <div class="list">
+            <label class="item item-input" ng-repeat="item in items">
+                <span class="input-label">{{item.title}} ($)</span>
+                <input type="number" placeholder="0" ng-model="item.model" ng-change="onPriceChange()">
+            </label>
+
+            <label class="item item-input" ng-repeat="item in newitems" ng-if="item.show">
+                <span class="input-label">{{item.title}} ($)</span>
+                <input type="number" placeholder="0" ng-model="item.model" ng-change="onPriceChange()">
+            </label>
+
+        </div>
+
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label" style="color: red">Total Price ($)</span>
+                <!-- <input type="number" ng-model="order.total_price"> -->
+                <p class="input-p">{{order.total_price | number:2}}</p>
+            </label>
+        </div>
+
+        <div class="list">
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Message</span>
+                <input type="text" placeholder="Message" ng-model="order.message" style="text-align: left;">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Memo</span>
+                <input type="text" placeholder="Memo" ng-model="order.memo" style="text-align: left;">
+            </label>
+
+        </div>
+
+        <button ng-click="saveOrder()" class="button button-block button-positive">Add Order</button>
+
+    </ion-content>
+</ion-view>

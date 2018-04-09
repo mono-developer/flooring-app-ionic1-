@@ -1,0 +1,40 @@
+<ion-view view-title="Client List" id="client-list">
+
+  <ion-nav-buttons side="right">
+      <button class="button" ui-sref="app.client-add" ng-if="!selectKey">Add New</button>
+      <button class="button" ng-click="saveClientItem()" ng-if="selectKey">Save</button>
+  </ion-nav-buttons>
+
+  <ion-content padding="true" class="has-header">
+    <ion-slides  disable-side-menu-drag="" options="{'loop': true}" slider="slider2" delegate-handle="slider2" class="slider-body">
+            <ion-slide-page id="clientList-slide24"
+                            style="background:url('img/background/slider1.jpg') no-repeat center;background-size:cover;"></ion-slide-page>
+            <ion-slide-page id="clientList-slide26"
+                            style="background:url('img/background/slider2.jpg') no-repeat center;background-size:cover;"></ion-slide-page>
+            <ion-slide-page id="clientList-slide27"
+                            style="background:url('img/background/slider3.jpg') no-repeat center;background-size:cover;"></ion-slide-page>
+        </ion-slides>
+
+    <ion-list >
+       <ion-item class="item-remove-animate item-avatar client"
+            ng-repeat="item in clientsList" type="item-text-wrap" ng-click="goClientDetailPage(item)" ng-if="!selectKey">
+         <img src="img/icon/client.png">
+         <h2>{{item.first_name}} {{item.last_name}}</h2>
+         <p><i class="icon ion-email"></i>&nbsp; {{item.client_email}}</p>
+         <p><i class="icon ion-ios-telephone"></i>&nbsp; {{item.phone}}</p>
+         <i class="icon ion-chevron-right icon-accessory right-icon"></i>
+         <ion-option-button class="button-assertive ion-trash-a" style="font-size: 30px" ng-click="deleteClient(item)"></ion-option-button>
+         <ion-option-button class="button-balanced ion-compose" style="font-size: 30px" ng-click="editClient(item)"></ion-option-button>
+       </ion-item>
+
+       <ion-checkbox ng-if="selectKey" class="item-thumbnail-left item-icon-right check-box"
+       ng-repeat="item in clientsList" ng-model="checkItems[item._id]" ng-change="print()">
+           <img src="img/icon/client.png" style="left:65px;">
+           <h2>{{item.first_name}} {{item.last_name}}</h2>
+           <p>{{item.client_email}}</p>
+           <i class="icon ion-chevron-right"></i>
+       </ion-checkbox>
+
+     </ion-list>
+  </ion-content>
+</ion-view>

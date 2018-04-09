@@ -1,0 +1,352 @@
+<ion-view view-title="{{order.memo}}" id="order-detail">
+  <ion-content class="padding">
+    <div class="list customer-info">
+      <a class="item item-thumbnail-left">
+        <img src="img/icon/avatar.png">
+        <h2>{{clientData.first_name}} {{clientData.last_name}}</h2>
+        <p class="p1"><i class="icon ion-email"></i>&nbsp;&nbsp;{{clientData.client_email}}</p>
+        <p class="p2"><i class="icon ion-ios-telephone"></i>&nbsp;&nbsp;{{clientData.phone}}</p>
+      </a>
+    </div>
+
+
+    <ion-segment ng-model="categories" full="true"  assertive>
+        <ion-segment-button value="product">
+          Products
+        </ion-segment-button>
+        <ion-segment-button value="invoice">
+          Distributors
+        </ion-segment-button>
+
+      </ion-segment>
+
+    <div ng-switch="categories">
+
+       <ion-list class="order_product" ng-switch-when="product">
+         <a class="item item-thumbnail-left" ng-repeat="item in sortProducts" >
+           <img src="{{item.image}}">
+           <h2>{{item.name}}</h2>
+           <p class="p1">Cost: ${{item.cost}}, Count: {{item.count}}</p>
+           <p class="p2">Price: ${{(item.cost * 1) * (item.count * 1)}}</p>
+         </a>
+
+         <a class="item item-icon-left">Sales Tax (%)
+           <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+         </a>
+
+         <a class="item item-icon-left">Discount ($)
+           <span style="margin-left: 50px;">{{order.discount}}</span>
+         </a>
+
+         <a class="item item-icon-left">Shipping Fee ($)
+           <span style="margin-left: 50px;">{{order.sales_tax}}</span>
+         </a>
+
+        </ion-list>
+
+        <ion-list ng-switch-when="invoice">
+          
+          <ion-item class="item-avatar item-icon-right" ng-repeat="(key, group) in sortProducts | groupBy:'distributor_id'"
+                      ng-init="dist = getDisData(key)" ng-click="disInvoicePage(group)">
+              <img ng-src="{{dist.image}}">
+              <h2>{{dist.name}}</h2>
+              <p>{{dist.city + ' '+dist.address}} | {{dist.phone}}</p>
+              <i class="icon ion-ios-arrow-forward"></i>
+          </ion-item>
+
+        </ion-list>
+
+        </ion-list>
+
+      </div>
+
+    <!-- Product List -->
+
+    <div class="list product-list">
+
+
+      <a class="item item-icon-left">
+        Total Price:
+        <span style="margin-left: 50px; color: red;">
+          $ {{order.total_price | number:2}}
+        </span>
+      </a>
+    </div>
+
+    <div class="list">
+        <div class="item item-divider">
+            Tracking Status
+        </div>
+    </div>
+    <div class="wrapper">
+        <ul class="StepProgress">
+            <li class="StepProgress-item" ng-class="orderData.step > 0 ? 'is-done' : 'current'">
+                <p class="title" ng-click="showStep1()">Ordering</p>
+                <div ng-show="step1 == true">
+                    <div style="margin-top: 10px;">
+                        <div class="list">
+                            <div class="item item-icon-left">
+                                <i class="icon ion-ios-calendar"></i>
+                                Order Date
+                                <span class="item-note">
+                                {{order.date}}
+                            </span>
+                            </div>
+                        </div>
+
+                        <div  class="button-bar" ng-hide="user_type== 2 || user_type == 3 || order.step != 0" >
+
+                            <button class="button button-positive button-block icon-left ion-ios-camera" type="file"
+                                      ngf-select="uploadFile($file)" ngf-pattern="'image/*'" ngf-accept="'image/*'">
+                                      Attach Paid Invoice
+                            </button>
+                            <!-- <button ng-click="viewInvoice()" class="button button-positive button-block icon ion-email">&nbsp; View Invoice</button> -->
+                            <button ng-click="editInvoice()" class="button button-positive button-block icon ion-email">&nbsp; Edit Invoice</button>
+
+                        </div>
+
+
+                        <div class="item" ng-show="order.attach_image ">
+                            <img class="full-image" src="{{order.attach_image}}">
+                        </div>
+
+                        <a class="button button-dark button-block icon-left ion-android-call" href="tel:{{clientData.phone}}">
+                            Call ({{clientData.phone}})
+                        </a>
+
+                        <div class="button-bar" class="submit_cancel"  ng-hide="user_type== 2 || user_type == 3 || order.step != 0">
+                            <a class="button submit" ng-click="orderingSubmit()">Submit</a>
+                              <!-- <a class="button submit" ng-click="sendingEmail()">SendEmail</a> -->
+                          </div>
+
+                    </div>
+                </div>
+            </li>
+            <li class="StepProgress-item" ng-class="order.step > 1 ? 'is-done' : (order.step == 1 ? 'current' : '')">
+                <p class="title" ng-click="showStep2()">Payment</p>
+                <div ng-show="step2 == true">
+                    <div style="margin-top: 10px;">
+                        <div class="list">
+                            <div class="item item-icon-left">
+                                <i class="icon ion-ios-calendar"></i>
+                                Order Date
+                                <span class="item-note">
+                                    {{order.date}}
+                                </span>
+                            </div>
+                            <ion-toggle toggle-class="toggle-positive" ng-model="viewInvoice">View Paid Invoice</ion-toggle>
+                            <div class="item" ng-show="viewInvoice">
+                                <img class="full-image" src="{{order.attach_image}}">
+                            </div>
+                            <ion-toggle toggle-class="toggle-positive" ng-model="paymentReceived.checked" ng-change="paymentReceivedChanged()">Payment Received</ion-toggle>
+                        </div>
+
+                        <a class="button button-dark button-block icon-left ion-android-call" href="tel:{{clientData.phone}}">
+                            Call ({{clientData.phone}})
+                        </a>
+                        <div class="button-bar" class="submit_cancel"  ng-hide="user_type== 2 || user_type == 3 || order.step != 1">
+                            <a class="button submit" ng-click="paymentSubmit()">Submit</a>
+                            <a class="button cancel" ng-click="paymentCancel()">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="StepProgress-item" ng-class="order.step > 2 ? 'is-done' : (order.step == 2 ? 'current' : '')">
+                <p class="title" ng-click="showStep3()">Shipping</p>
+                <div ng-show="step3 == true">
+                    <div style="margin-top: 10px;">
+                        <div class="list">
+                            <div class="item item-icon-left">
+                                <i class="icon ion-ios-calendar"></i>
+                                Order Date
+                                <span class="item-note">
+                                    {{order.date}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <a class="button button-dark button-block icon-left ion-android-call" href="tel:{{clientData.phone}}">
+                            Call ({{clientData.phone}})
+                        </a>
+                        <div class="list">
+                            <ion-toggle toggle-class="toggle-positive" ng-model="viewInvoice">View Paid Invoice</ion-toggle>
+                            <div class="item" ng-show="viewInvoice">
+                                <img class="full-image" src="{{order.attach_image}}">
+                            </div>
+
+                            <ion-toggle toggle-class="toggle-positive" ng-model="itemShipped.checked" ng-change="itemShippedChanged()">Items Shipped</ion-toggle>
+
+                            <ion-toggle toggle-class="toggle-positive" ng-model="shippingTracking.checked" ng-change="shippingTrackingChanged()">View Tracking #</ion-toggle>
+
+                            <label class="item item-input" ng-show="shippingTracking.checked">
+                                <span class="input-label">Tracking #</span>
+                                <input type="text" placeholder="Traking Number" ng-model="order.tracking_no">
+                            </label>
+
+                        </div>
+
+                        <div class="button-bar" class="submit_cancel"  ng-hide="user_type== 2 || user_type == 3 || order.step != 2">
+                            <a class="button submit" ng-click="shippingSubmit()">Submit</a>
+                            <a class="button cancel" ng-click="paymentCancel()">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="StepProgress-item" ng-class="order.step > 3 ? 'is-done' : (order.step == 3 ? 'current' : '')">
+                <p class="title" ng-click="showStep4()">Receiving</p>
+                <div ng-show="step4 == true">
+                    <div style="margin-top: 10px;">
+                        <div class="list">
+                            <div class="item item-icon-left">
+                                <i class="icon ion-ios-calendar"></i>
+                                Order Date
+                                <span class="item-note">
+                                    {{order.date}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <a class="button button-dark button-block icon-left ion-android-call" href="tel:{{clientData.phone}}">
+                            Call ({{clientData.phone}})
+                        </a>
+                        <div class="list">
+                            <ion-toggle toggle-class="toggle-positive" ng-model="viewInvoice">View Paid Invoice</ion-toggle>
+                            <div class="item" ng-show="viewInvoice">
+                                <img class="full-image" src="{{order.attach_image}}">
+                            </div>
+
+                            <ion-toggle toggle-class="toggle-positive" ng-model="itemReceived.checked" ng-change="itemReceivedChanged()">Items Received</ion-toggle>
+
+                            <ion-toggle toggle-class="toggle-positive" ng-model="receivingTracking.checked" ng-change="receivingTrackingChanged()">View Tracking #</ion-toggle>
+                            <label class="item item-input" ng-show="receivingTracking.checked">
+                                <span class="input-label">Tracking #</span>
+                                <input type="text" placeholder="Traking Number" ng-model="order.tracking_no">
+                            </label>
+                        </div>
+
+                        <div class="button-bar" class="submit_cancel"  ng-hide="user_type== 2 || user_type == 3 || order.step != 3">
+                            <a class="button submit" ng-click="receivedSubmit()">Submit</a>
+                            <a class="button cancel" ng-click="paymentCancel()">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="StepProgress-item" ng-class="order.step > 4 ? 'is-done' : (order.step == 4 ? 'current' : '')">
+                <p class="title" ng-click="showStep5()">Install / Delivery</p>
+
+                <div ng-show="step5 == true">
+                    <div style="margin-top: 10px;">
+                        <div class="list">
+                            <div class="item item-icon-left">
+                                <i class="icon ion-ios-calendar"></i>
+                                Order Date
+                                <span class="item-note">
+                                {{order.date}}
+                            </span>
+                            </div>
+                        </div>
+
+                        <a class="button button-dark button-block icon-left ion-android-call" href="tel:{{clientData.phone}}">
+                            Call ({{clientData.phone}})
+                        </a>
+
+                        <div class="item item-divider">
+                            Installation Company
+                        </div>
+
+                        <label class="item item-input">
+                            <span class="input-label">Company Name</span>
+                            <input type="text" placeholder="" ng-model="order.install_company.name">
+                        </label>
+                        <label class="item item-input">
+                            <span class="input-label">Technician Name</span>
+                            <input type="text" placeholder="" ng-model="order.install_company.tech_name">
+                        </label>
+                        <label class="item item-input">
+                            <span class="input-label">Technician Phone</span>
+                            <input type="text" placeholder="(XXX) XXX-XXXX" maxlength="10" ui-mask="(999) 999-9999" ng-model="order.install_company.tech_phone">
+                        </label>
+                        <label class="item item-input">
+                            <span class="input-label">Installation Date</span>
+                            <input type="text" placeholder="" ng-model="order.install_company.date">
+                        </label>
+                        <button ng-click="showDatePicker()" class="button button-block picker-button"> </button>
+                        <label class="item item-input">
+                            <span class="input-label">Installation Time</span>
+                            <input type="text" placeholder="" ng-model="order.install_company.time">
+                        </label>
+                        <button ng-click="showTimePicker()" class="button button-block picker-button"> </button>
+
+                        <div class="button-bar" class="submit_cancel"  ng-hide="user_type== 2 || user_type == 3 || order.step != 4">
+                            <a class="button submit" ng-click="deliverySubmit()">Submit</a>
+                            <a class="button cancel" ng-click="paymentCancel()">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="StepProgress-item" ng-class="order.step > 5 ? 'is-done' : (order.step == 5 ? 'current' : '')">
+                <p class="title" ng-click="showStep6()">Completed</p>
+            </li>
+        </ul>
+        <div style="margin-top: 10px;" ng-show="step6 == true">
+            <div class="list">
+                <div class="item item-icon-left">
+                    <i class="icon ion-ios-calendar"></i>
+                    Order Date
+                    <span class="item-note">
+                    {{order.date}}
+                  </span>
+                </div>
+
+                <div class="item item-divider">
+                    Tracking Number
+                </div>
+
+                <label class="item item-input">
+                    <span class="input-label">Tracking #</span>
+                    <input type="text" placeholder="" ng-model="order.Tracking.tracking_no" readonly>
+                </label>
+
+                <div class="item item-divider">
+                    Installation Company
+                </div>
+
+                <label class="item item-input">
+                    <span class="input-label">Company Name</span>
+                    <input type="text" placeholder="" ng-model="order.install_company.name" readonly>
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Technician Name</span>
+                    <input type="text" placeholder="" ng-model="order.install_company.tech_name" readonly>
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Technician Phone</span>
+                    <input type="text" placeholder="(XXX) XXX-XXXX" ui-mask="(999) 999-9999" ng-model="order.install_company.tech_phone" readonly>
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Installation Date</span>
+                    <input type="text" placeholder="" ng-model="order.install_company.date" readonly>
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Installation Time</span>
+                    <input type="text" placeholder="" ng-model="order.install_company.time" readonly>
+                </label>
+
+
+            </div>
+            <a class="button button-dark button-block icon-left ion-android-call" href="tel:{{clientData.phone}}">Call ({{clientData.phone}})</a>
+        </div>
+    </div>
+
+
+
+
+
+
+  </ion-content>
+</ion-view>

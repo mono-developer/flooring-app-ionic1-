@@ -1,0 +1,14 @@
+<ion-view title="Project List" id="page8">
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="saveProjectItem()">Save</button>
+    </ion-nav-buttons>
+    <ion-content padding="true" class="has-header">
+
+        <div class="spacer" style="width: 300px; height: 13px;"></div>
+
+        <ion-list>
+            <ion-checkbox ng-repeat="item in projectlists" ng-model="checkItems[item.value]" ng-change="print()">{{item.name}}</ion-checkbox>
+        </ion-list>
+
+    </ion-content>
+</ion-view>

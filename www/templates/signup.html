@@ -1,0 +1,44 @@
+<ion-view title="Signup" hide-nav-bar="true" id="signup">
+    <ion-content padding="true"
+                 style="background: url(img/background/bg1.jpg) no-repeat center;background-size:cover;"
+                 class="manual-ios-statusbar-padding"
+                 scroll="false">
+        <form class="list center-form">
+            <ion-list>
+
+                <label class="item item-input top-input">
+                    <span class="input-label">Username</span>
+                    <input type="text" placeholder="" ng-model="user.username">
+                </label>
+
+                <label class="item item-input email-input">
+                    <span class="input-label">Email</span>
+                    <input type="email" placeholder="" ng-model="user.email" autocapitalize="none">
+                </label>
+
+                <label class="item item-select select-label">
+                  <span class="input-label">Select</span>
+                  <select ng-model="id" ng-change="changedUserType(id)">
+                     <option ng-repeat="item in userlists" value="{{item.id}}">{{item.title}}</option>
+                  </select>
+                </label>
+
+                <label class="item item-select type-select">
+                    <span class="input-label">Store</span>
+                    <select ng-model="mainStore" ng-options="item.name for item in stores"
+                            ng-change="changedStoreId(mainStore)" style="background: none;"></select>
+                </label>
+                <label class="item item-input bottom-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" placeholder="" ng-model="user.password">
+                </label>
+
+            </ion-list>
+
+            <div class="spacer" style="height: 40px;"></div>
+
+            <button ng-click="doSignUp()" class="button button-positive  button-block" menu-close="">Sign up</button>
+            <a ui-sref="login" id="signup-button4" class="button button-light  button-block button-clear">Already have an account?</a>
+        </form>
+    </ion-content>
+</ion-view>

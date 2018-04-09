@@ -1,0 +1,45 @@
+<ion-view view-title="Order List" id="order-list">
+
+  <ion-nav-buttons side="right" ng-hide="user_type== 2 || user_type == 3">
+      <button class="button" ui-sref="app.order-add">Add New</button>
+  </ion-nav-buttons>
+
+  <ion-content>
+
+    <ion-list>
+        <ion-item class="item-divider">Client</ion-item>
+        <ion-item class="item item-avatar item-icon-right"  ng-repeat="item in orderData" ng-click="viewOrderDetail(item._id, item)">
+            <img src="img/icon/order.png" style="border-radius: 4%;">
+            <h2>{{item.memo}}</h2>
+            <p>Date: {{item.date}}, Price: ${{item.total_price | number:2}}</p>
+            <i class="icon ion-chevron-right" style="font-size: 20px;"></i>
+            <ion-option-button class="button-balanced ion-compose" style="font-size: 30px" ng-click="viewOrderDetail(item._id, item)">
+            <ion-option-button class="button-assertive ion-trash-a" style="font-size: 30px" ng-click="deleteOrder(item)">
+          </ion-option-button>
+        </ion-item>
+
+        <!-- 
+        <ion-item class="item-divider">Distributor</ion-item>
+        <ion-item  ng-if="!selectKey" class="item item-avatar item-icon-right"  ng-repeat="item in orderData" ng-click="viewOrderDetail(item._id, item)">
+            <img src="img/icon/order.png" style="border-radius: 4%;">
+            <h2>{{item.memo}}</h2>
+            <p>Date: {{item.date}}, Price: ${{item.total_price | number:2}}</p>
+            <i class="icon ion-chevron-right" style="font-size: 20px;"></i>
+            <ion-option-button class="button-balanced ion-compose" style="font-size: 30px" ng-click="viewOrderDetail(item._id, item)">
+            <ion-option-button class="button-assertive ion-trash-a" style="font-size: 30px" ng-click="deleteOrder(item)">
+          </ion-option-button>
+        </ion-item> -->
+
+        <!-- <ion-checkbox ng-if="selectKey" class="item item-avatar item-icon-right check-box"  ng-repeat="item in orderData" ng-model="checkItems[item._id]" ng-change="print()">
+
+            <img src="img/icon/order.png" style="border-radius: 4%;left:65px;">
+            <h2>{{item.memo}}</h2>
+            <p>Date: {{item.date}}, Price: ${{item.total_price | number:2}}</p>
+            <i class="icon ion-chevron-right"></i>
+
+        </ion-checkbox> -->
+
+    </ion-list>
+  </ion-content>
+
+</ion-view>

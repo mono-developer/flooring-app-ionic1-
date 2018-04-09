@@ -1,0 +1,153 @@
+<ion-view title="{{product.name}}" id="product-detail">
+
+    <ion-nav-buttons side="right" ng-show="user_type == 3">
+        <button class="button" ng-click="editProduct()">
+            Edit
+        </button>
+    </ion-nav-buttons>
+
+    <ion-content class="has-header padding">
+
+        <img src="{{product.image}}" alt="" style="width: 100%;">
+        <div class="padding-container">
+            <div>
+                <div class="description">
+                    <div class="details">
+
+                        <div class="item-table">
+                            <div class="des1">Status:</div>
+                            <div class="des2">
+                              <label class="{{product.available ? 'label-available' : 'label-unavailable'}}">
+                                {{product.available ? 'Available' : 'Unavailable'}}
+                              </label>
+                            </div>
+                        </div>
+
+                        <div class="item-table">
+                            <div class="des1">Category:</div>
+                            <div class="des2"><b>{{material}}</b></div>
+                        </div>
+
+                        <div class="item-table">
+                            <div class="des1">Color</div>
+                            <div class="des2"><b>{{product.color}}</b></div>
+                        </div>
+
+                        <div class="item-table">
+                            <div class="des1">Protection:</div>
+                            <div class="des2"><b>{{product.protection}}</b></div>
+                        </div>
+
+                        <div class="item-table">
+                            <div class="des1">SKU #:</div>
+                            <div class="des2"><b>{{product.sku_num}}</b></div>
+                        </div>
+
+                    </div>
+
+                    <div class="qrcode">
+                        <qrcode data="{{qrCode}}"></qrcode>
+                    </div>
+                </div>
+
+                <div class="calculator">
+                  <form>
+                    <label class="item item-input">
+                        <span class="input-label">Minimum order size</span>
+                        <input type="text" placeholder="" ng-model="product.min_order_size" readonly>
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Quantity</span>
+                        <input type="number" placeholder="" ng-model="cal.qunantity">
+                    </label>
+
+                    <label class="item item-input item-stacked-label">
+                      <button class="button button-small button-clear" ng-click="calTotal()">Calculator</button>
+                      <input class="total" type="number" placeholder="Total" ng-model="cal.total" readonly>
+                    </label>
+                  </form>
+
+                </div>
+
+                <hr/>
+
+                <div class="row">
+                    <div class="col text-center">
+                        <span class="price">PRICE: ${{product.price | number:2}}</span>
+                    </div>
+                </div>
+                <div class="row" ng-show="product.per_carton">
+                    <div class="col text-center">
+                        <span class="price">CARTON PRICE: ${{product.per_carton}}</span>
+                    </div>
+                </div>
+
+                <div class="list">
+                    <ion-toggle toggle-class="toggle-positive" ng-model="showShipping">Optional Shipping Info
+                    </ion-toggle>
+                    <label class="item item-input" ng-show="showShipping">
+                        <span class="input-label">Min Shipping Cost</span>
+                        <input type="text" placeholder="" ng-model="product.min_shipping_cost" ui-money-mask readonly>
+                    </label>
+                    <label class="item item-input" ng-show="showShipping">
+                        <span class="input-label">Flat Fee</span>
+                        <input type="text" placeholder="" ng-model="product.flat_fee" ui-money-mask readonly>
+                    </label>
+                    <label class="item item-input" ng-show="showShipping">
+                        <span class="input-label">Min</span>
+                        <input type="text" placeholder="" ng-model="product.shipping_min" ui-money-mask readonly>
+                    </label>
+                    <label class="item item-input" ng-show="showShipping">
+                        <span class="input-label">Max</span>
+                        <input type="text" placeholder="" ng-model="product.shipping_max" ui-money-mask readonly>
+                    </label>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <a class="button button-block button-outline button-positive icon ion-android-call button-small">
+                            &nbsp; Call Distributor</a>
+                    </div>
+                </div>
+
+                <ion-list>
+
+                    <ion-item class="item item-avatar item-icon-right"  ng-repeat="item in sortClients"
+                     ng-click="goClientDetailPage(item)">
+
+                        <img src="img/icon/client.png" style="border-radius: 4%;">
+                        <h2>{{item.first_name}} {{item.last_name}}</h2>
+                        <p>{{item.client_email}}</p>
+                        <i class="icon ion-chevron-right" style="font-size: 20px;"></i>
+                      </ion-option-button>
+                    </ion-item>
+
+                </ion-list>
+
+                <button class="button button-positive button-block" ng-click="addClient()">Add Client</button>
+
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Distributor Name</span>
+                        <input type="text" placeholder="" ng-model="distributor.name" readonly>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Distributor Email</span>
+                        <input type="text" placeholder="" ng-model="distributor.distributor_email" readonly>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Phone Number</span>
+                        <input type="text" placeholder="" ng-model="distributor.phone" ui-mask="(999) 999-9999" readonly>
+                    </label>
+                </div>
+            </div>
+
+            <div  class="button-bar" ng-if="!selectKey">
+                <!-- <button ng-click="viewInvoice()" class="button button-positive button-block icon ion-email">&nbsp; Email</button> -->
+                <button ng-click="createInvoice()" class="button button-positive button-block icon ion-email">&nbsp; Email</button>
+                <button ng-click="downloadPDF()" class="button button-positive button-block icon ion-android-download">&nbsp; PDF</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

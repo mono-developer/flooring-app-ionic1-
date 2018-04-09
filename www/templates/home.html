@@ -1,0 +1,31 @@
+<ion-view view-title="Home" id="page1">
+  <ion-content class="bg-img">
+
+    <ion-list class="store-box" scroll="false">
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Store
+        </div>
+        <select ng-model="storeValue" ng-options="item.name for item in storeData"
+                ng-change="changedStoreId(storeValue)">
+        </select>
+      </label>
+    </ion-list>
+
+  </ion-content>
+
+  <div class="tabs tabs-icon-top" style="background-color: #387ef5; color: white">
+    <a class="tab-item" ng-click="goAddClient()">
+      <i class="icon"><img src="img/icon/add-client.png" style="width: 30px;"></i>
+      Add Client
+    </a>
+    <a class="tab-item" ng-click="scanQR()">
+      <i class="icon ion-camera"></i>
+      Scanner
+    </a>
+    <a class="tab-item" ng-click="goAddProduct()">
+      <i class="icon ion-social-dropbox"></i>
+      Add Product
+    </a>
+  </div>
+</ion-view>

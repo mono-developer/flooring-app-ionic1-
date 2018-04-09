@@ -1,0 +1,23 @@
+<ion-view title="Login" hide-nav-bar="true" id="page4">
+  <ion-content padding="true"
+               style="background: url(img/background/bg1.jpg) no-repeat center;background-size:cover;"
+               class="manual-ios-statusbar-padding"
+               scroll="false"
+               drag-content="false">
+      <div class=""></div>
+      <form id="login-form1" class="list center-form">
+          <ion-list>
+              <label class="item item-input top-input email-input">
+                  <span class="input-label">Email</span>
+                  <input type="email" placeholder="" ng-model="user.email" autocapitalize="none">
+              </label>
+              <label class="item item-input bottom-input">
+                  <span class="input-label">Password</span>
+                  <input type="password" placeholder="" ng-model="user.password" >
+              </label>
+          </ion-list>
+          <button class="button button-positive  button-block" ng-click="doLogin()" menu-close="">Log In</button>
+          <a ui-sref="signup" class="button button-light  button-block button-clear signup">Or create an account</a>
+      </form>
+  </ion-content>
+</ion-view>

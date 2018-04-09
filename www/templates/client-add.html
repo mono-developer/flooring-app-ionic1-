@@ -1,0 +1,54 @@
+<ion-view title="Add Client" id="add_client" hide-nav-bar="false">
+
+    <ion-content padding="true" class="has-header">
+        <form class="list">
+
+            <ion-item class="item-divider">Information</ion-item>
+
+            <label class="item item-input">
+                <span class="input-label">First Name</span>
+                <input type="text" placeholder="First Name" ng-model="client.first_name">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Last Name</span>
+                <input type="text" placeholder="Last Name" ng-model="client.last_name">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Phone</span>
+                <input type="tel" placeholder="(XXX) XXX-XXXX" maxlength="10" ng-model="client.phone">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Email</span>
+                <input type="email" placeholder="Example@email.com" ng-model="client.client_email">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Address</span>
+                <input type="text" placeholder="777 st." ng-model="client.address">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">City</span>
+                <input type="text" placeholder="City" ng-model="client.city">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">State</span>
+                <input type="text" placeholder="State" ng-model="client.state">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">ZIP Code</span>
+                <input type="text" placeholder="ZIP Code" ng-model="client.zipcode">
+            </label>
+
+            <button class="button button-positive  button-block" ng-click="addClient()">
+              Submit
+            </button>
+
+        </form>
+    </ion-content>
+</ion-view>

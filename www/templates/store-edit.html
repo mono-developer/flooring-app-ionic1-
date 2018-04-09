@@ -1,0 +1,43 @@
+<ion-view title="Distributor Info" id="distributor-detail">
+  <ion-content padding="true" class="has-header">
+
+      <div class="list card">
+
+          <label class="item item-input">
+              <span class="input-label">Name:</span>
+              <input type="text" placeholder="Name" ng-model="distributor.name">
+          </label>
+
+          <label class="item item-input">
+              <span class="input-label">Address:</span>
+              <input type="text" placeholder="777 Heaven Way" ng-model="distributor.address">
+          </label>
+
+          <label class="item item-input">
+              <span class="input-label">Phone #</span>
+              <input type="text" placeholder="(XXX) XXX-XXXX" ui-mask="(999) 999-9999" ng-model="distributor.phone">
+          </label>
+
+          <label class="item item-input">
+              <span class="input-label">Email:</span>
+              <input type="text" placeholder="Email" ng-model="distributor.distributor_email">
+          </label>
+
+          <label class="item item-input">
+              <span class="input-label">Fax:</span>
+              <input type="text" placeholder="Fax" ng-model="distributor.Fax">
+          </label>
+      </div>
+      <ion-list>
+
+        <button ng-click="addDistributor()" class="button button-positive  button-block">Sales rep for Distributor</button>
+        <div class="distributor-btns">
+          <button ng-click="workPhone()" class="button button-positive  button-block">Work Phone</button>
+          <button ng-click="cell()" class="button button-positive  button-block">Cell</button>
+          <button ng-click="email()" class="button button-positive  button-block">Email</button>
+          <button ng-click="fax()" class="button button-positive  button-block">Fax</button>
+        </div>
+
+      </ion-list>
+  </ion-content>
+</ion-view>

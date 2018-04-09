@@ -1,0 +1,30 @@
+<ion-modal-view id="page7">
+  <ion-header-bar style="background-color: #387ef5;">
+    <h1 class="title">Select Product</h1>
+    <div class="buttons">
+      <button class="button" ng-click="cancelProduct()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+        <ion-item>
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon" style="font-size: 25px;"></i>
+                <input type="text" placeholder="Search" ng-model="input.filterUser" style="font-size: 20px;">
+            </label>
+        </ion-item>
+
+        <ion-radio class="item-thumbnail-left item-icon-right" ng-repeat="item in productlists"
+                ng-value="item"  ng-model="productModal.serverSide" ng-change="selectedProduct(item)" name="server-side" >
+               <img src="{{item.image}}">
+               <h2>{{item.name}}</h2>
+               <p>Cost: ${{item.cost}}, Price: ${{item.price}}</p>
+               <label class="{{item.available ? 'label-available' : 'label-unavailable'}}">{{item.available ? 'Available' : 'Unavailable'}}</label>
+        </ion-radio>
+
+    </ion-list>
+
+
+
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,33 @@
+<ion-view title="Distributor list" id="page7">
+
+      <ion-nav-buttons side="right">
+          <button class="button" ui-sref="app.distributor-add">
+              Add New
+          </button>
+      </ion-nav-buttons>
+
+    <ion-content padding="true" class="has-header">
+        <ion-slides disable-side-menu-drag="" options="{'loop': true}" slider="slider2" delegate-handle="slider2" style="width:100%;height:200px;">
+            <ion-slide-page style="background:url('img/background/slider6.jpg') no-repeat center;background-size:cover;"></ion-slide-page>
+            <ion-slide-page style="background:url('img/background/slider4.jpg') no-repeat center;background-size:cover;"></ion-slide-page>
+            <ion-slide-page style="background:url('img/background/slider5.jpg') no-repeat center;background-size:cover;"></ion-slide-page>
+        </ion-slides>
+
+        <ion-list>
+            <ion-item>
+              <label class="item item-input">
+                <i class="icon ion-search placeholder-icon" style="font-size: 25px;"></i>
+                <input type="text" ng-model="input.filterUser" placeholder="Search" style="font-size: 20px;">
+              </label>
+            </ion-item>
+            <ion-item class="item-avatar item-icon-right" ng-repeat="item in distributorlist | filter:input.filterUser" ng-click="viewDistributorDetail(item)">
+                <img ng-src="{{item.image}}">
+                <h2>{{item.name}}</h2>
+                <p>{{item.city + ' '+item.address}} | {{item.phone}}</p>
+                <i class="icon ion-ios-arrow-forward"></i>
+                <ion-option-button class="button-assertive ion-trash-a" style="font-size: 30px" ng-click="deleteDistributor(item)"></ion-option-button>
+                <ion-option-button class="button-balanced ion-compose" style="font-size: 30px" ng-click="editDistributor(item)"></ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

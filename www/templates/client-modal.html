@@ -1,0 +1,22 @@
+<ion-modal-view id="client-list">
+
+  <ion-header-bar style="background-color: #387ef5;">
+    <h1 class="title">Select Client</h1>
+    <div class="buttons">
+      <button class="button" ng-click="cancelClient()">Close</button>
+    </div>
+  </ion-header-bar>
+
+  <ion-content padding="true" class="has-header">
+    <ion-list>
+      <ion-radio class="item-remove-animate item-avatar client"  ng-repeat="item in clientsList" 
+      ng-value="item" ng-model="clientModal.clientSide" ng-change="selectedClient(item)" name="server-side">
+          <img src="img/icon/client.png">
+          <h2>{{item.first_name}} {{item.last_name}}</h2>
+          <p><i class="icon ion-email"></i>&nbsp; {{item.client_email}}</p>
+          <p><i class="icon ion-ios-telephone"></i>&nbsp; {{item.phone}}</p>
+      </ion-radio>
+
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

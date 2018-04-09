@@ -1,0 +1,82 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+
+    <ion-header-bar class="bar-stable">
+      <div class="menu-div">
+          <img src="img/icon/logo-icon.png" alt="">
+          <h3>FloorManager</h3>
+      </div>
+    </ion-header-bar>
+
+    <ion-content>
+      <ion-list class="menu_list">
+
+        <ion-item class="item-icon-right"  ui-sref="app.home"  menu-close="">
+            Home
+            <i class="icon ion-ios-home"></i>
+        </ion-item>
+        <ion-item class="item-icon-right"  ui-sref="app.client-list" menu-close=""
+                  ng-hide="user_type== 2 || user_type == 3">
+            Client List
+            <i class="icon ion-ios-people"></i>
+        </ion-item>
+        <ion-item class="item-icon-right" ui-sref="app.distributor-list" menu-close=""
+                    ng-hide="user_type == 3">
+            Distributor List
+            <i class="icon ion-briefcase"></i>
+        </ion-item>
+
+        <ion-item class="item-icon-right" ui-sref="app.product-list" menu-close=""
+                  ng-hide="">
+            Product List
+            <i class="icon ion-pricetags"></i>
+        </ion-item>
+
+        <ion-item class="item-icon-right" ui-sref="app.store-list" menu-close=""
+                    ng-hide="">
+            Store List
+            <i class="icon ion-ios-cart"></i>
+        </ion-item>
+
+        <ion-item class="item-icon-right" ui-sref="app.order-list" menu-close=""
+                ng-hide="">
+            Order List
+            <i class="icon ion-clipboard"></i>
+        </ion-item>
+
+        <ion-item class="item-icon-right" ui-sref="app.control-panel" menu-close="">
+          Control Panel
+            <i class="icon ion-android-color-palette"></i>
+        </ion-item>
+
+        <ion-item class="item-icon-right" ui-sref="app.setting" menu-close="">
+          Settings
+            <i class="icon ion-ios-gear"></i>
+        </ion-item>
+        <ion-item class="item-icon-right" ng-click="doLogout()" ui-sref="login">
+          Sign Out
+            <i class="icon ion-log-out"></i>
+        </ion-item>
+        <ion-item class="item-icon-right  hidden" ui-sref="orderDetail" menu-close="" style="display: none;">
+            Client Detail
+            <i class="icon ion-log-out"></i>
+        </ion-item>
+
+      </ion-list>
+    </ion-content>
+
+  </ion-side-menu>
+</ion-side-menus>

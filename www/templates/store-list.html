@@ -1,0 +1,21 @@
+
+<ion-view view-title="Store List">
+    <ion-nav-buttons side="right">
+        <button class="button" ui-sref="app.store-add">
+            Add New
+        </button>
+    </ion-nav-buttons>
+
+    <ion-content padding="true" class="has-header">
+      <ion-list>
+
+          <ion-item class="item-avatar item-icon-right" ng-repeat="item in storeData" ng-click="viewStoreDetail(item)">
+              <img src="img/icon/distributor-icon.png">
+              <h2>{{item.name}}</h2>
+              <p>{{item.city}}</p>
+              <i class="icon ion-ios-gear-outline"></i>
+          </ion-item>
+
+      </ion-list>
+    </ion-content>
+</ion-view>
