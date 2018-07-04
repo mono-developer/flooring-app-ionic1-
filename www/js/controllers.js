@@ -612,6 +612,7 @@ $scope.saveProduct = function(value){
        })
      }
 
+
     $scope.addDistributor = function(){
 
       $ionicLoading.show();
@@ -907,7 +908,7 @@ $scope.saveProduct = function(value){
 
 })
 
-.controller('ProductAddCtrl', function($scope, $stateParams, $rootScope, $ionicModal, $timeout, $ionicHistory, $cordovaDialogs, $ionicLoading, $ionicActionSheet, $cordovaCamera, Server, $filter) {
+.controller('ProductAddCtrl', function($scope, $stateParams, $rootScope, $ionicModal, $timeout, $ionicHistory, $cordovaDialogs, $ionicLoading, Server, $filter) {
 
   var token = localStorage.getItem('token');
   $scope.materiallists = [
@@ -2354,32 +2355,62 @@ $scope.saveProduct = function(value){
   }
 })
 
-.controller('ControlPanelCtrl', function($scope, $http, $ionicLoading, $cordovaCamera, $cordovaCapture, $cordovaFileTransfer) {
+.controller('ControlPanelCtrl', function ($scope, $http, $ionicLoading, $cordovaCamera, $ionicActionSheet, $cordovaCapture, $cordovaFileTransfer, $timeout, ImageService) {
   
-  var options = {
-    quality: 50,
-    destinationType: Camera.DestinationType.DATA_URL,
-    sourceType: Camera.PictureSourceType.CAMERA,
-    allowEdit: true,
-    encodingType: Camera.EncodingType.JPEG,
-    targetWidth: 100,
-    targetHeight: 100,
-    popoverOptions: CameraPopoverOptions,
-    saveToPhotoAlbum: false,
-    correctOrientation: true
-  };
 
-  $scope.selectPicture = function () {
-
-    console.log('camera');
-
-    $cordovaCamera.getPicture(options).then(function (imageData) {
-      var image = document.getElementById('myImage');
-      image.src = "data:image/jpeg;base64," + imageData;
-    }, function (err) {
-      // error
+  $scope.imagePath = function () {
+    ImageService.getPictureOptions().then(function (file) {
+      console.log('converting', file); 
+      ImageService.uploadImage(file).then(function(url){
+        console.log('url', url);
+      })
     });
   }
+
+  $scope.uploadFile = function (file) {
+
+    console.log('upload-img', file);
+    $ionicLoading.show();
+    var inputConfig = {
+      bucket: 'wtcb/ticket',
+      access_key: 'AKIAJNHK7OBATDPIEJJA',
+      secret_key: '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'
+    };
+    AWS.config.update({
+      accessKeyId: inputConfig.access_key,
+      secretAccessKey: inputConfig.secret_key
+    });
+    AWS.config.region = 'us-east-2';
+    var bucket = new AWS.S3({
+      params: {
+        Bucket: inputConfig.bucket
+      }
+    });
+    var filename = new Date().getTime() + file.name;
+    var params = {
+      Key: filename,
+      ContentType: file.type,
+      Body: file,
+      ACL: 'public-read',
+      ServerSideEncryption: 'AES256'
+    };
+
+    console.log(params);
+    bucket.putObject(params, function (err, data) {
+      $ionicLoading.hide();
+      if (err) {} else {
+        var object = {
+          url: 'https://s3-us-east-2.amazonaws.com/wtcb/ticket/' + filename
+        };
+        $scope.distributor.image = object.url;
+        console.log($scope.distributor.image);
+      }
+    })
+  }
+
+
+
+ 
 
 })
 

@@ -7,6 +7,8 @@
     "@ionic/cloud-angular": "^0.12.0",
     "angular-filter": "^0.5.17",
     "angular-input-masks": "^2.6.0",
+    "cordova-android": "6.4.0",
+    "cordova-android-support-gradle-release": "^1.3.0",
     "cordova-ios": "4.5.4",
     "cordova-plugin-camera": "^4.0.2",
     "cordova-plugin-compat": "^1.2.0",
@@ -57,7 +59,8 @@
   ],
   "cordova": {
     "platforms": [
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
       "cordova-plugin-console": {},
@@ -75,7 +78,10 @@
       },
       "cordova-plugin-x-toast": {},
       "cordova-plugin-x-socialsharing": {},
-      "cordova-plugin-camera": {}
+      "cordova-plugin-camera": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      }
     }
   }
 }

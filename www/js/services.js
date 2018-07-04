@@ -17,6 +17,143 @@ angular.module('starter.services', [])
         }
 })
 
+.factory('ImageService', function ($q, $ionicLoading, $ionicActionSheet, $cordovaCamera, $timeout) {
+    
+    function getPictureOptions() {
+
+        return new Promise((resolve, reject) => {
+        var option1 = {
+            quality: 75,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            allowEdit: true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 300,
+            targetHeight: 300,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: false
+        };
+
+        var option2 = {
+            quality: 75,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            allowEdit: true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 300,
+            targetHeight: 300,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: false
+        }
+        var hideSheet = $ionicActionSheet.show({
+            buttons: [{
+                    text: 'Camera'
+                },
+                {
+                    text: 'PhotoLibrary'
+                }
+            ],
+            destructiveText: '',
+            titleText: 'Select Option',
+            cancelText: 'Cancel',
+            cancel: function () {
+                // add cancel code..
+            },
+            buttonClicked: function (index) {
+                console.log(index);   
+                let option;         
+                if (index == 0) {
+                    option = option1;
+                } else if (index == 1) {
+                    option = option2;
+                } else {
+                }
+                return getFile(option).then(function(file){
+                    resolve(file);
+                });                
+            }
+        });
+
+        $timeout(function () {
+            hideSheet();
+        }, 3000);
+        });
+    }
+
+    function getFile(option) {
+        return new Promise((resolve, reject) => {
+            $cordovaCamera.getPicture(option).then(function (imageData) {
+                console.log('imageData', imageData);
+                var image_src = "data:image/jpeg;base64," + imageData;
+                var filename = new Date().getTime() + '.JPG';
+                var file = dataURLtoFile(image_src, filename);
+                console.log(file);
+                resolve(file);
+                // console.log(imageURL);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(',')
+        var mime = arr[0].match(/:(.*?);/)[1];
+        var bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    function uploadImage (file) {
+        return new Promise((resolve, reject) => {
+            $ionicLoading.show();
+            var inputConfig = {
+                bucket: 'wtcb/ticket',
+                access_key: 'AKIAJNHK7OBATDPIEJJA',
+                secret_key: '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'
+            };
+            AWS.config.update({
+                accessKeyId: inputConfig.access_key,
+                secretAccessKey: inputConfig.secret_key
+            });
+            AWS.config.region = 'us-east-2';
+            var bucket = new AWS.S3({
+                params: {
+                    Bucket: inputConfig.bucket
+                }
+            });
+            var params = {
+                Key: file.name,
+                ContentType: file.type,
+                Body: file,
+                ACL: 'public-read',
+                ServerSideEncryption: 'AES256'
+            };
+            bucket.putObject(params, function (err, data) {
+                $ionicLoading.hide();
+                if (err) {
+                    reject(err)
+                } else {
+                    var object = {
+                        url: 'https://s3-us-east-2.amazonaws.com/wtcb/ticket/' + file.name
+                    };
+                    console.log(object.url);
+                    resolve(object.url);
+                }
+            })
+        });
+    }
+
+    return {
+        getPictureOptions: getPictureOptions,
+        uploadImage: uploadImage
+    };
+})
+
 .factory('InvoiceService', function ($q) {
 
     function formatDate() {
