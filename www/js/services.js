@@ -85,7 +85,7 @@ angular.module('starter.services', [])
             $cordovaCamera.getPicture(option).then(function (imageData) {
                 console.log('imageData', imageData);
                 var image_src = "data:image/jpeg;base64," + imageData;
-                var filename = new Date().getTime() + '.JPG';
+                var filename = 'image.JPG';
                 var file = dataURLtoFile(image_src, filename);
                 console.log(file);
                 resolve(file);
@@ -126,8 +126,9 @@ angular.module('starter.services', [])
                     Bucket: inputConfig.bucket
                 }
             });
+            var filename = new Date().getTime() + file.name;
             var params = {
-                Key: file.name,
+                Key: filename,
                 ContentType: file.type,
                 Body: file,
                 ACL: 'public-read',
@@ -139,7 +140,7 @@ angular.module('starter.services', [])
                     reject(err)
                 } else {
                     var object = {
-                        url: 'https://s3-us-east-2.amazonaws.com/wtcb/ticket/' + file.name
+                        url: 'https://s3-us-east-2.amazonaws.com/wtcb/ticket/' + filename
                     };
                     console.log(object.url);
                     resolve(object.url);

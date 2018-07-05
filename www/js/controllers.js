@@ -2359,10 +2359,11 @@ $scope.saveProduct = function(value){
   
 
   $scope.imagePath = function () {
+    console.log('1');
     ImageService.getPictureOptions().then(function (file) {
-      console.log('converting', file); 
+      console.log('2', file); 
       ImageService.uploadImage(file).then(function(url){
-        console.log('url', url);
+        console.log('3', url);
       })
     });
   }
