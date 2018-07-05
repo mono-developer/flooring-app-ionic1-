@@ -88,28 +88,17 @@
                             <div class="item item-icon-left">
                                 <i class="icon ion-ios-calendar"></i>
                                 Order Date
-                                <span class="item-note">
-                                {{order.date}}
-                            </span>
+                                <span class="item-note">{{order.date}}</span>
                             </div>
                         </div>
-
                         <div  class="button-bar" ng-hide="user_type== 2 || user_type == 3 || order.step != 0" >
-
-                            <button class="button button-positive button-block icon-left ion-ios-camera" type="file"
-                                      ngf-select="uploadFile($file)" ngf-pattern="'image/*'" ngf-accept="'image/*'">
-                                      Attach Paid Invoice
-                            </button>
+                            <button class="button button-positive button-block icon-left ion-ios-camera" ng-click="uploadPicture()">Attach Paid Invoice</button>
                             <!-- <button ng-click="viewInvoice()" class="button button-positive button-block icon ion-email">&nbsp; View Invoice</button> -->
                             <button ng-click="editInvoice()" class="button button-positive button-block icon ion-email">&nbsp; Edit Invoice</button>
-
                         </div>
-
-
                         <div class="item" ng-show="order.attach_image ">
                             <img class="full-image" src="{{order.attach_image}}">
                         </div>
-
                         <a class="button button-dark button-block icon-left ion-android-call" href="tel:{{clientData.phone}}">
                             Call ({{clientData.phone}})
                         </a>
@@ -117,7 +106,7 @@
                         <div class="button-bar" class="submit_cancel"  ng-hide="user_type== 2 || user_type == 3 || order.step != 0">
                             <a class="button submit" ng-click="orderingSubmit()">Submit</a>
                               <!-- <a class="button submit" ng-click="sendingEmail()">SendEmail</a> -->
-                          </div>
+                        </div>
 
                     </div>
                 </div>

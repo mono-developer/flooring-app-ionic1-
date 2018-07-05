@@ -1,95 +1,92 @@
 angular.module('starter.services', [])
 
 .factory('Server', function ($http) {
-        return {
-            httpDetails: function ( method, url, data) {
-                return $http({
-                    headers: 'Content-Type:application/json',
-                    method: method,
-                    url: url,
-                    data: JSON.stringify(data)
-                }).success(function (response) {
-                    return response;
-                }).error(function (error) {
-                    return error;
-                });
-            }
+    return {
+        httpDetails: function ( method, url, data) {
+            return $http({
+                headers: 'Content-Type:application/json',
+                method: method,
+                url: url,
+                data: JSON.stringify(data)
+            }).success(function (response) {
+                return response;
+            }).error(function (error) {
+                return error;
+            });
         }
+    }
 })
 
 .factory('ImageService', function ($q, $ionicLoading, $ionicActionSheet, $cordovaCamera, $timeout) {
     
     function getPictureOptions() {
 
-        return new Promise((resolve, reject) => {
-        var option1 = {
-            quality: 75,
-            destinationType: Camera.DestinationType.DATA_URL,
-            sourceType: Camera.PictureSourceType.CAMERA,
-            allowEdit: true,
-            encodingType: Camera.EncodingType.JPEG,
-            targetWidth: 300,
-            targetHeight: 300,
-            popoverOptions: CameraPopoverOptions,
-            saveToPhotoAlbum: false
-        };
+        return $q((resolve, reject) => {
+            var option1 = {
+                quality: 75,
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.CAMERA,
+                allowEdit: true,
+                encodingType: Camera.EncodingType.JPEG,
+                targetWidth: 300,
+                targetHeight: 300,
+                popoverOptions: CameraPopoverOptions,
+                saveToPhotoAlbum: false
+            };
 
-        var option2 = {
-            quality: 75,
-            destinationType: Camera.DestinationType.DATA_URL,
-            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-            allowEdit: true,
-            encodingType: Camera.EncodingType.JPEG,
-            targetWidth: 300,
-            targetHeight: 300,
-            popoverOptions: CameraPopoverOptions,
-            saveToPhotoAlbum: false
-        }
-        var hideSheet = $ionicActionSheet.show({
-            buttons: [{
-                    text: 'Camera'
+            var option2 = {
+                quality: 75,
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                allowEdit: true,
+                encodingType: Camera.EncodingType.JPEG,
+                targetWidth: 300,
+                targetHeight: 300,
+                popoverOptions: CameraPopoverOptions,
+                saveToPhotoAlbum: false
+            };
+
+            var hideSheet = $ionicActionSheet.show({
+                buttons: [{
+                        text: 'Camera'
+                    },
+                    {
+                        text: 'PhotoLibrary'
+                    }
+                ],
+                destructiveText: '',
+                titleText: 'Select Option',
+                cancelText: 'Cancel',
+                cancel: function () {
+                    // add cancel code..
                 },
-                {
-                    text: 'PhotoLibrary'
+                buttonClicked: function (index) {
+                    let option;         
+                    if (index == 0) {
+                        option = option1;
+                    } else if (index == 1) {
+                        option = option2;
+                    } else {
+                    }
+                    return getFile(option).then(function(file){
+                        resolve(file);
+                    });                
                 }
-            ],
-            destructiveText: '',
-            titleText: 'Select Option',
-            cancelText: 'Cancel',
-            cancel: function () {
-                // add cancel code..
-            },
-            buttonClicked: function (index) {
-                console.log(index);   
-                let option;         
-                if (index == 0) {
-                    option = option1;
-                } else if (index == 1) {
-                    option = option2;
-                } else {
-                }
-                return getFile(option).then(function(file){
-                    resolve(file);
-                });                
-            }
-        });
+            });
 
-        $timeout(function () {
-            hideSheet();
-        }, 3000);
+            $timeout(function () {
+                hideSheet();
+            }, 3000);
         });
     }
 
     function getFile(option) {
-        return new Promise((resolve, reject) => {
+        return $q(function (resolve, reject){
             $cordovaCamera.getPicture(option).then(function (imageData) {
-                console.log('imageData', imageData);
                 var image_src = "data:image/jpeg;base64," + imageData;
                 var filename = 'image.JPG';
                 var file = dataURLtoFile(image_src, filename);
-                console.log(file);
                 resolve(file);
-                // console.log(imageURL);
             }, function (err) {
                 reject(err);
             });
@@ -109,7 +106,7 @@ angular.module('starter.services', [])
     }
 
     function uploadImage (file) {
-        return new Promise((resolve, reject) => {
+        return $q(function (resolve, reject) {
             $ionicLoading.show();
             var inputConfig = {
                 bucket: 'wtcb/ticket',
@@ -137,6 +134,7 @@ angular.module('starter.services', [])
             bucket.putObject(params, function (err, data) {
                 $ionicLoading.hide();
                 if (err) {
+                    console.log(err);
                     reject(err)
                 } else {
                     var object = {
@@ -190,14 +188,14 @@ angular.module('starter.services', [])
     }
 
     function createPdf(invoice) {
-      return $q(function (resolve, reject) {
-        var dd = createDocumentDefinition(invoice);
-        var pdf = pdfMake.createPdf(dd);
+        return $q(function (resolve, reject) {
+            var dd = createDocumentDefinition(invoice);
+            var pdf = pdfMake.createPdf(dd);
 
-        pdf.getBase64(function (output) {
-            resolve(base64ToUint8Array(output));
+            pdf.getBase64(function (output) {
+                resolve(base64ToUint8Array(output));
+            });
         });
-      });
     }
 
     function downloadPdf(invoice, fileName) {
@@ -228,7 +226,7 @@ angular.module('starter.services', [])
                 })
             })
         });
-      }
+    }
 
     return {
       createPdf: createPdf,
@@ -238,7 +236,6 @@ angular.module('starter.services', [])
     function createDocumentDefinition(invoice) {
 
         var items = invoice.Items.map(function (item) {
-
             return [item.Sales_person, item.SKU, item.Description, item.Color, item.Price, item.Cost, item.Total];
         });
         var items2 = invoice.Item2s.map(function (item) {
