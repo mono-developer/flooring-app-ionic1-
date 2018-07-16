@@ -10241,6 +10241,20 @@ a.button {
 #product-modal .cancel {
   border: 1px solid green; }
 
+.center_view {
+  text-align: center;
+  font-size: 18px;
+  margin: 0; }
+
+.platform-android .action-sheet .button {
+  text-align: center !important;
+  color: #097cec !important;
+  font-size: 20px !important;
+  border-top: 1px solid gray !important; }
+
+.bar-stable .button .button-clear {
+  color: #fff; }
+
 ul#ion-segment {
   display: -webkit-box;
   display: -webkit-flex;

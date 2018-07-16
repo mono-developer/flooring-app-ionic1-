@@ -48,15 +48,15 @@ angular.module('starter.services', [])
 
             var hideSheet = $ionicActionSheet.show({
                 buttons: [{
-                        text: 'Camera'
+                        text: '<p>Camera</p>'
                     },
                     {
-                        text: 'PhotoLibrary'
+                        text: '<p>PhotoLibrary</p>'
                     }
                 ],
                 destructiveText: '',
-                titleText: 'Select Option',
-                cancelText: 'Cancel',
+                titleText: `<p class="center_view">Selecet Option</p>`,
+                cancelText: `<p>Cancel</p>`,
                 cancel: function () {
                     // add cancel code..
                 },
